@@ -185,9 +185,12 @@ _LOG_TAIL_MAX_BYTES = 4096
 # the error summary above it remains visible.
 _LOG_TAIL_MAX_LINES = 15
 
-# Poll cadence for the per-runner exit watcher. 0.5s matches the
-# client's online-poll cadence (daemon_launch.DAEMON_POLL_INTERVAL_S),
-# so a crashed runner is reported within about one client poll.
+# Poll cadence for the per-runner exit watcher. 0.5s matches the client's
+# steady-state online-poll cadence (daemon_launch.DAEMON_POLL_INTERVAL_S),
+# so a crashed runner is reported within about one client poll once the
+# client has backed off to that cadence. The client's first few probes are
+# tighter (see daemon_launch.daemon_poll_intervals), which only means it
+# may poll a couple of extra times before the exit report lands.
 _RUNNER_WATCH_INTERVAL_S = 0.5
 
 # Cadence of the orphan-reaper sweep. The host installs itself as a child
